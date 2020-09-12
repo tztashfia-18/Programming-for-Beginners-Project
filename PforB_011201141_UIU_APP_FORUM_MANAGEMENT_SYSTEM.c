@@ -78,14 +78,16 @@ void add_new()
 		printf("\n\nPress ESC Key To Exit, \n\n\t Press Any Other Key To Add Other Record:");
 		test = getch();
 
-		if(test == 27) // As ASCII value of esc is 27
+		if(test == 27)
             break;
+
 	}
 
 	fclose(f);
 
-    printf("\n\nEnter Any Key To Continue");
+    printf("\n\nEnter Any Key To Continue: ");
     getch();
+
 }
 
 void View_All()
@@ -94,7 +96,11 @@ void View_All()
     FILE *f;
 	int i;
 	if((f = fopen("data.txt","rb+")) == NULL)
-		exit(0);
+    {
+        printf("\n\nNo Info Yet\n\nAt First Add Member Info !!!");
+        exit(0);
+    }
+
 
 
 	printf("Member Name\t\tMember ID\tContact Number\tEmail\t\t\tSkill\n");
@@ -115,7 +121,7 @@ void View_All()
 
     fclose(f);
 
-    printf("\n\nEnter Any Key To Continue");
+    printf("\n\nEnter Any Key To Continue: ");
     getch();
 
 }
@@ -129,10 +135,10 @@ void search()
 	char member_id[10];
 	int flag = 1;
 
-	f = fopen("data.txt","rb+");
 
-	if(f == 0)
+	if( (f = fopen("data.txt","rb+")) == NULL)
     {
+        printf("\n\nNo Info Yet\n\nAt First Add Member Info !!!");
         exit(0);
     }
 
@@ -162,7 +168,7 @@ void search()
 	}
 	fclose(f);
 
-	printf("\n\nEnter Any Key To Continue");
+	printf("\n\nEnter Any Key To Continue: ");
 	getch();
 
 }
@@ -174,6 +180,7 @@ void edit()
     FILE *f;
 	char member_id[10];
 	long int size = sizeof(member);
+
 	if((f = fopen("data.txt","rb+")) == NULL)
     {
         exit(0);
@@ -186,6 +193,7 @@ void edit()
 	while(fread(&member, sizeof(member), 1, f) == 1)
 	{
 		if(strcmp(member.id,member_id) == 0)
+
 		{
 
 			printf("\nEnter Name:\n");
@@ -222,7 +230,7 @@ void edit()
 
 	}
 
-	printf("/nThe member_id %s Successfully Edited!!!!", member_id);
+	printf("\nThe member_id %s Successfully Edited!!!!", member_id);
 	fclose(f);
 
 	printf("\n\nEnter Any Key To Continue: ");
@@ -238,12 +246,12 @@ void reduce()
 	int i = 1;
 	char member_id[10];
 
-	if((t = fopen("temp.txt","w+")) == NULL)
+	if((t = fopen("temp.txt","w")) == NULL)
     {
         exit(0);
     }
 
-	if((f = fopen("data.txt","rb")) == NULL)
+	if((f = fopen("data.txt","r")) == NULL)
     {
         exit(0);
     }
@@ -267,31 +275,39 @@ void reduce()
 
 	}
 	if(i == 1)
+
 	{
-		printf("Member Id %s not found", member_id);
+        printf("Member ID %s not found", member_id);
 		fflush(stdin);
+
+		fclose(f);
+		fclose(t);
+
 		remove("data.txt");
 		fflush(stdin);
 		rename("temp.txt","data.txt");
 		printf("\n\nEnter any key to Continue");
 		getch();
 
-		fclose(f);
-		fclose(t);
 
-		main();
+        main();
+
 	}
+
     fflush(stdin);
+
+    fclose(f);
+	fclose(t);
+
     remove("data.txt");
 	fflush(stdin);
 	rename("temp.txt", "data.txt");
-	system("cls");
+
 	printf("\nThe member_id %s Successfully Deleted!!!!", member_id);
 
-	fclose(f);
-	fclose(t);
 
-	printf("\n\nEnter Any Key To Continue");
+
+	printf("\n\nEnter Any Key To Continue: ");
 	getch();
 
 }
@@ -309,7 +325,7 @@ void view_event()
     printf("\t* Git & Github\n");
     printf("\t* Python For Machine Learning\n");
 
-    printf("\n\nEnter Any Key To Continue");
+    printf("\n\nEnter Any Key To Continue: ");
 
 }
 
@@ -324,7 +340,7 @@ int main()
     {
         list();
 
-        option = getch(); // scanf("%s", option);
+        option = getch();
 
 		option = toupper(option);
 
